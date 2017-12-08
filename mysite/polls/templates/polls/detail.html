@@ -10,3 +10,25 @@
 {% endfor %}
 <input type = "submit" value = "Vote" />
 </form>
+
+<script
+	src = "http://code.jquery.com/jquery-3.2.1.min.js"
+	integrity = "sha256-hwg4gsxgFZh0sEEamdOYGBf13FyQuiTwlAQgxVSNgt4-"
+	crossorigin = "anonymous"></script>
+<script>
+function update() {
+	$.ajax({
+		url: '/polls/{{ question.id }}/resultData/',
+		dataType: 'json',
+		success: fuction(data) {
+			for (i = 0; i < data['votes'].length; i++){
+				var str = data['votes'][i] + " vote";
+				if (data['votes'][i] > 1) str += s;
+				$("#choice" + (i + 1)).html(str);
+			}
+		}
+	});
+}
+
+setInterval(update, 1000);
+</script>

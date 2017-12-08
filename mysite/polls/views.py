@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 
 from django.template import loader
 
@@ -46,3 +46,8 @@ def vote(request, question_id):
 		selected_choice.save()
 		return HttpResponseRedirect(reverse('polls:results', args = (question.id,)))
 
+def resultData(request, question_id):
+	question = get_object_or_404(Question, pk = question_id)
+	choices = question.choice_set.all()
+	votes = [choice.votes for choice in choices]
+	return JsonResponse({ 'votes': votes })
